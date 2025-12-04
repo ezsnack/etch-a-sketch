@@ -1,7 +1,10 @@
+let gridColor = "blue";
+let drawColor = "red";
+let currentGridSize = 16;
+
 function createGrid(gridSize) {
   const container = document.querySelector(".grid-container");
   const cellSize = parseInt(window.getComputedStyle(container).getPropertyValue("width")) / gridSize;
-  console.log(cellSize); //remove later
   for (let i = 0; i < gridSize * gridSize; i++) {
     let cell = document.createElement("div");
     cell.classList.add("cell");
@@ -14,7 +17,7 @@ function createGrid(gridSize) {
 }
 
 function changeColor(event) {
-  event.target.style.backgroundColor = "red";
+  event.target.style.backgroundColor = drawColor;
 }
 
 function clearGrid() {
@@ -22,9 +25,8 @@ function clearGrid() {
   container.replaceChildren();
 }
 
-const button = document.querySelector("button");
-button.addEventListener("click", () => {
-  console.log("clicked"); //remove later
+const changeGridSize = document.querySelector("#change-grid-size");
+changeGridSize.addEventListener("click", () => {
   let size = parseInt(prompt("Desired grid size: "));
     if (size > 100) {
       alert("Desired size exceeds maximum (100).\nGrid size set to 100.")
@@ -36,8 +38,32 @@ button.addEventListener("click", () => {
       alert("Invalid input.\nGrid size set to 16.");
       size = 16;
     }
+  currentGridSize = size;
   clearGrid();
-  createGrid(size);
-})
+  createGrid(currentGridSize);
+});
 
-createGrid(16); //default size
+function randomize() {
+  //returns an int between 0 and 255
+  return Math.floor(Math.random() * 256);
+}
+
+const randomizeGridColorButton = document.querySelector("#rand-grid-color");
+randomizeGridColorButton.addEventListener("click", () => {
+  clearGrid();
+  createGrid(currentGridSize);
+    gridColor = "rgb(" + randomize() + " " + randomize() + " " + randomize() + ")";
+  let cells = document.querySelectorAll(".cell");
+  for (let cell of cells)
+    cell.style.backgroundColor = gridColor;
+});
+
+const randomizeDrawColorButton = document.querySelector("#rand-draw-color");
+randomizeDrawColorButton.addEventListener("click", () => {
+  clearGrid();
+  createGrid(currentGridSize);
+  drawColor = "rgb(" + randomize() + " " + randomize() + " " + randomize() + ")";
+  console.log(drawColor); // remove later
+});
+
+createGrid(currentGridSize);

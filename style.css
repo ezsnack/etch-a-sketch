@@ -11,6 +11,17 @@ button {
   color: hotpink;
   background-color: limegreen;
   border-color: hotpink;
+  flex: none;
+}
+
+.options {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.warning {
+  text-align: center;
 }
 
 .grid-container {
