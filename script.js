@@ -1,6 +1,7 @@
 let gridColor = "blue";
 let drawColor = "red";
 let currentGridSize = 16;
+let darkeningOn = false;
 
 function createGrid(gridSize) {
   const container = document.querySelector(".grid-container");
@@ -10,19 +11,11 @@ function createGrid(gridSize) {
     cell.classList.add("cell");
     cell.style.height = cellSize + "px";
     cell.style.width = cellSize + "px";
+    cell.style.backgroundColor = gridColor;
     container.appendChild(cell);
   }
   for (let cell of container.children)
     cell.addEventListener("mouseover", changeColor);
-}
-
-function changeColor(event) {
-  event.target.style.backgroundColor = drawColor;
-}
-
-function clearGrid() {
-  const container = document.querySelector(".grid-container");
-  container.replaceChildren();
 }
 
 const changeGridSize = document.querySelector("#change-grid-size");
@@ -43,6 +36,21 @@ changeGridSize.addEventListener("click", () => {
   createGrid(currentGridSize);
 });
 
+function clearGrid() {
+  const container = document.querySelector(".grid-container");
+  container.replaceChildren();
+}
+
+function changeColor(event) {
+  if (event.target.style.backgroundColor != drawColor) {
+    event.target.style.backgroundColor = drawColor;
+    event.target.style.opacity = darkeningOn ? "0.0" : "1";
+  }
+  if (darkeningOn && event.target.style.opacity != "1") {
+    event.target.style.opacity = (parseFloat(event.target.style.opacity) + 0.1).toString();
+  }
+}
+
 function randomize() {
   //returns an int between 0 and 255
   return Math.floor(Math.random() * 256);
@@ -51,8 +59,8 @@ function randomize() {
 const randomizeGridColorButton = document.querySelector("#rand-grid-color");
 randomizeGridColorButton.addEventListener("click", () => {
   clearGrid();
+  gridColor = "rgb(" + randomize() + " " + randomize() + " " + randomize() + ")";
   createGrid(currentGridSize);
-    gridColor = "rgb(" + randomize() + " " + randomize() + " " + randomize() + ")";
   let cells = document.querySelectorAll(".cell");
   for (let cell of cells)
     cell.style.backgroundColor = gridColor;
@@ -62,8 +70,17 @@ const randomizeDrawColorButton = document.querySelector("#rand-draw-color");
 randomizeDrawColorButton.addEventListener("click", () => {
   clearGrid();
   createGrid(currentGridSize);
-  drawColor = "rgb(" + randomize() + " " + randomize() + " " + randomize() + ")";
-  console.log(drawColor); // remove later
+  drawColor = "rgb(" + randomize() + ", " + randomize() + ", " + randomize() + ")";
+});
+
+const darkeningToggleButton = document.querySelector("#toggle-darkening");
+darkeningToggleButton.addEventListener("click", () =>{
+  if (darkeningOn)
+    darkeningOn = false;
+  else
+    darkeningOn = true;
+  clearGrid();
+  createGrid(currentGridSize);
 });
 
 createGrid(currentGridSize);

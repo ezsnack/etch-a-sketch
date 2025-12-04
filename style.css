@@ -3,14 +3,15 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 10px;
 }
 
 button {
   width: 80px;
   height: 50px;
-  color: hotpink;
-  background-color: limegreen;
-  border-color: hotpink;
+  color: coral;
+  background-color: lightgreen;
+  border-color: coral;
   flex: none;
 }
 
